@@ -2,9 +2,9 @@
 <Configuration>
   <ViewDefinitions>
     <View>
-      <Name>RegistryValue</Name>
+      <Name>RegistryValueInfo</Name>
       <ViewSelectedBy>
-        <TypeName>RegistryHelper.RegistryValue</TypeName>
+        <TypeName>RegistryHelper.RegistryValueInfo</TypeName>
       </ViewSelectedBy>
       <GroupBy>
         <PropertyName>Hive</PropertyName>
