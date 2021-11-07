@@ -189,7 +189,7 @@ namespace RegistryHelper
 
                 try
                 {
-                    if (!SessionState.InvokeProvider.Item.Exists(path, false, true))
+                    if (!SessionState.InvokeProvider.Item.Exists(path, false, _isLiteralPath))
                     {
                         ErrorRecord errorRecord = new(
                             new ItemNotFoundException($"Cannot find path '{path}' because it does not exist."),

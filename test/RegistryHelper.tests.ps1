@@ -50,6 +50,11 @@ Describe "RegistryHelper" {
             $value.Value | Should -Not -BeExactly $env:TEMP
             [Environment]::ExpandEnvironmentVariables($value.Value) | Should -BeExactly $env:TEMP
         }
+
+        It "Should retrieve registry values even if the specified path contains wildcard characters" {
+            Get-RegistryValue -Path "HKCU:\*" |
+            Should -BeOfType ([RegistryValueInfo])
+        }
     }
 
     Context "Get-RegistryValue.LiteralPath" {
@@ -95,6 +100,11 @@ Describe "RegistryHelper" {
             $value = $values | Where-Object -Property Name -Value TEMP -EQ
             $value.Value | Should -Not -BeExactly $env:TEMP
             [Environment]::ExpandEnvironmentVariables($value.Value) | Should -BeExactly $env:TEMP
+        }
+
+        It "Throws an exception if the specified path contains wildcard characters" {
+            { Get-RegistryValue -LiteralPath "HKCU:\*" -ErrorAction Stop } |
+            Should -Throw -ErrorId "PathNotFound,RegistryHelper.GetRegistryValueCommand"
         }
     }
 }
