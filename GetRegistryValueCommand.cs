@@ -62,7 +62,7 @@ namespace RegistryHelper
             }
             set
             {
-                _recurse = true;
+                _recurse = value;
             }
         }
 
@@ -83,6 +83,9 @@ namespace RegistryHelper
             }
         }
 
+        /// <summary>
+        /// ValueOption parameter
+        /// </summary>
         [Parameter()]
         public RegistryValueOptions ValueOption
         {
