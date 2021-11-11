@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The Get-RegistryValue cmdlet retrieves one or more values from the registry.</maml:para>
+      <maml:para>The `Get-RegistryValue` cmdlet retrieves one or more values from the registry.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

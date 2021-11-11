@@ -27,7 +27,7 @@ Get-RegistryValue -LiteralPath <String[]> [-Recurse] [-Depth <UInt32>] [-ValueOp
 
 ## DESCRIPTION
 
-The Get-RegistryValue cmdlet retrieves one or more values from the registry.
+The `Get-RegistryValue` cmdlet retrieves one or more values from the registry.
 
 ## EXAMPLES
 
