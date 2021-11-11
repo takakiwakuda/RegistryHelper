@@ -115,7 +115,7 @@ namespace RegistryHelper
                     continue;
                 }
 
-                WriteObject(GetRegistryValues(key, _depth), true);
+                WriteObject(EnumerateRegistryValues(key, _depth), true);
             }
         }
 
@@ -152,7 +152,7 @@ namespace RegistryHelper
             return null;
         }
 
-        private IEnumerable<RegistryValueInfo> GetRegistryValues(RegistryKey key, uint depth)
+        private IEnumerable<RegistryValueInfo> EnumerateRegistryValues(RegistryKey key, uint depth)
         {
             foreach (string name in key.GetValueNames().OrderBy(n => n))
             {
@@ -173,7 +173,7 @@ namespace RegistryHelper
                 {
                     using RegistryKey subKey = key.OpenSubKey(subKeyName);
 
-                    foreach (RegistryValueInfo info in GetRegistryValues(subKey, depth))
+                    foreach (RegistryValueInfo info in EnumerateRegistryValues(subKey, depth))
                     {
                         yield return info;
                     }
