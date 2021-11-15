@@ -5,8 +5,8 @@ using namespace RegistryHelper
 
 Set-StrictMode -Version 3.0
 
-Describe "RegistryHelper" {
-    Context "Get-RegistryValue.Path" {
+Describe "Get-RegistryValue" {
+    Context "Path" {
         It "Throws an exception if the path does not exist" {
             { Get-RegistryValue -Path "TestDrive:\Foo" -ErrorAction Stop } |
             Should -Throw -ErrorId "PathNotFound,RegistryHelper.GetRegistryValueCommand"
@@ -57,7 +57,7 @@ Describe "RegistryHelper" {
         }
     }
 
-    Context "Get-RegistryValue.LiteralPath" {
+    Context "LiteralPath" {
         It "Throws an exception if the path does not exist" {
             { Get-RegistryValue -LiteralPath "TestDrive:\Foo" -ErrorAction Stop } |
             Should -Throw -ErrorId "PathNotFound,RegistryHelper.GetRegistryValueCommand"
