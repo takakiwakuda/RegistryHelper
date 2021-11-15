@@ -17,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <LogicalName>RegistryHelper.Properties.Resources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="RegistryHelper.format.ps1xml" CopyToOutputDirectory="PreserveNewest" />
     <None Include="RegistryHelper.psd1" CopyToOutputDirectory="PreserveNewest" />
     <None Include="RegistryHelper.psm1" CopyToOutputDirectory="PreserveNewest" />

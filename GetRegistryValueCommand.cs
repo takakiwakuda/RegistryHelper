@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Security;
 using Microsoft.Win32;
+using ProjectResources = RegistryHelper.Properties.Resources;
 
 namespace RegistryHelper
 {
@@ -195,7 +196,7 @@ namespace RegistryHelper
                     if (!SessionState.InvokeProvider.Item.Exists(path, false, _isLiteralPath))
                     {
                         ErrorRecord errorRecord = new(
-                            new ItemNotFoundException($"Cannot find path '{path}' because it does not exist."),
+                            new ItemNotFoundException(string.Format(ProjectResources.PathNotFound, path)),
                             "PathNotFound",
                             ErrorCategory.ObjectNotFound,
                             path
@@ -208,7 +209,7 @@ namespace RegistryHelper
                 catch (DriveNotFoundException e)
                 {
                     ErrorRecord errorRecord = new(
-                        new ItemNotFoundException($"Cannot find path '{path}' because it does not exist.", e),
+                        new ItemNotFoundException(string.Format(ProjectResources.PathNotFound, path), e),
                         "PathNotFound",
                         ErrorCategory.ObjectNotFound,
                         path
@@ -230,7 +231,7 @@ namespace RegistryHelper
                 if (!provider.Name.Equals("Registry", StringComparison.InvariantCulture))
                 {
                     ErrorRecord errorRecord = new(
-                        new InvalidOperationException($"The path '{path}' is not a registry."),
+                        new InvalidOperationException(string.Format(ProjectResources.NotRegistryProvider, path)),
                         "NotRegistryProvider",
                         ErrorCategory.InvalidArgument,
                         path

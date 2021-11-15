@@ -1,0 +1,2 @@
+PathNotFound=Cannot find path '{0}' because it does not exist.
+NotRegistryProvider=The path '{0}' is not a registry.
