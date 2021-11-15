@@ -3,7 +3,7 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1416</NoWarn>
     <TargetFrameworks>net5.0;net462</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
