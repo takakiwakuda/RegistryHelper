@@ -2,13 +2,17 @@
 <Configuration>
   <ViewDefinitions>
     <View>
+
       <Name>RegistryValueInfo</Name>
+
       <ViewSelectedBy>
         <TypeName>RegistryHelper.RegistryValueInfo</TypeName>
       </ViewSelectedBy>
+
       <GroupBy>
         <PropertyName>Hive</PropertyName>
       </GroupBy>
+
       <TableControl>
         <TableHeaders>
           <TableColumnHeader>
@@ -21,6 +25,7 @@
             <Label>Value</Label>
           </TableColumnHeader>
         </TableHeaders>
+
         <TableRowEntries>
           <TableRowEntry>
             <TableColumnItems>
@@ -37,6 +42,7 @@
           </TableRowEntry>
         </TableRowEntries>
       </TableControl>
+
     </View>
   </ViewDefinitions>
 </Configuration>

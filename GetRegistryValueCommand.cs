@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Management.Automation;
 using System.Security;
@@ -103,14 +104,14 @@ namespace RegistryHelper
         private uint _depth = uint.MaxValue;
         private bool _isLiteralPath;
         private RegistryValueOptions _options = RegistryValueOptions.None;
-        private string[] _path;
+        private string[] _path = Array.Empty<string>();
         private bool _recurse;
 
         protected override void ProcessRecord()
         {
             foreach (string path in ResolvePath())
             {
-                using RegistryKey key = OpenRegistryKey(path);
+                using RegistryKey? key = OpenRegistryKey(path);
                 if (key == null)
                 {
                     continue;
@@ -120,7 +121,8 @@ namespace RegistryHelper
             }
         }
 
-        private RegistryKey OpenRegistryKey(string path)
+        [SuppressMessage("csharp", "IDE0057")]
+        private RegistryKey? OpenRegistryKey(string path)
         {
             int index = path.IndexOf('\\');
 
@@ -172,7 +174,12 @@ namespace RegistryHelper
 
                 foreach (string subKeyName in key.GetSubKeyNames())
                 {
-                    using RegistryKey subKey = key.OpenSubKey(subKeyName);
+                    using RegistryKey? subKey = key.OpenSubKey(subKeyName);
+                    if (subKey == null)
+                    {
+                        WriteWarning($"Unable to open key '{subKey}'.");
+                        continue;
+                    }
 
                     foreach (RegistryValueInfo info in EnumerateRegistryValues(subKey, depth))
                     {
@@ -250,15 +257,15 @@ namespace RegistryHelper
 
     public class RegistryValueInfo
     {
-        public string Hive { get; internal set; }
+        public string? Hive { get; internal set; }
 
-        public string Name { get; internal set; }
+        public string? Name { get; internal set; }
 
         public RegistryValueKind Type { get; internal set; }
 
-        public object Value { get; internal set; }
+        public object? Value { get; internal set; }
 
-        public override string ToString()
+        public override string? ToString()
         {
             if (Value == null)
             {

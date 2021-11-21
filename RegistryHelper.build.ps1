@@ -6,9 +6,9 @@ param (
     $Configuration = "Debug",
 
     [Parameter()]
-    [ValidateSet("net5.0", "net462")]
+    [ValidateSet("net6.0", "net462")]
     [string]
-    $Framework = "net5.0"
+    $Framework = "net6.0"
 )
 
 task Build @{
@@ -48,7 +48,7 @@ task Test {
     $command = "& { Import-Module -Name '$module'; Invoke-Pester -Path '$PSScriptRoot' }"
 
     switch ($Framework) {
-        "net5.0" {
+        "net6.0" {
             exec { pwsh -c $command }
         }
 
