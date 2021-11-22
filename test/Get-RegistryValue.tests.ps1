@@ -14,7 +14,7 @@ Describe "Get-RegistryValue" {
 
         It "Throws an exception if the root of the path does not exist" {
             { Get-RegistryValue -Path "Foo:" -ErrorAction Stop } |
-            Should -Throw -ErrorId "PathNotFound,RegistryHelper.GetRegistryValueCommand"
+            Should -Throw -ErrorId "DriveNotFound,RegistryHelper.GetRegistryValueCommand"
         }
 
         It "Throws an exception if the path is not a registry" {
@@ -65,7 +65,7 @@ Describe "Get-RegistryValue" {
 
         It "Throws an exception if the root of the path does not exist" {
             { Get-RegistryValue -LiteralPath "Foo:" -ErrorAction Stop } |
-            Should -Throw -ErrorId "PathNotFound,RegistryHelper.GetRegistryValueCommand"
+            Should -Throw -ErrorId "DriveNotFound,RegistryHelper.GetRegistryValueCommand"
         }
 
         It "Throws an exception if the path is not a registry" {

@@ -20,7 +20,7 @@ namespace RegistryHelper
         /// Path parameter
         /// </summary>
         [Parameter(Mandatory = true, ParameterSetName = "Path", Position = 0, ValueFromPipeline = true)]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         public string[] Path
         {
             get
@@ -37,7 +37,7 @@ namespace RegistryHelper
         /// LiteralPath parameter
         /// </summary>
         [Parameter(Mandatory = true, ParameterSetName = "LiteralPath", ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNullOrEmpty]
         [Alias("PSPath", "LP")]
         public string[] LiteralPath
         {
@@ -55,7 +55,7 @@ namespace RegistryHelper
         /// <summary>
         /// Recurse parameter
         /// </summary>
-        [Parameter()]
+        [Parameter]
         public SwitchParameter Recurse
         {
             get
@@ -71,7 +71,7 @@ namespace RegistryHelper
         /// <summary>
         /// Depth parameter
         /// </summary>
-        [Parameter()]
+        [Parameter]
         public uint Depth
         {
             get
@@ -88,7 +88,7 @@ namespace RegistryHelper
         /// <summary>
         /// ValueOption parameter
         /// </summary>
-        [Parameter()]
+        [Parameter]
         public RegistryValueOptions ValueOption
         {
             get
@@ -112,7 +112,7 @@ namespace RegistryHelper
             foreach (string path in ResolvePath())
             {
                 using RegistryKey? key = OpenRegistryKey(path);
-                if (key == null)
+                if (key is null)
                 {
                     continue;
                 }
@@ -133,22 +133,21 @@ namespace RegistryHelper
                 "HKEY_LOCAL_MACHINE" => Registry.LocalMachine,
                 "HKEY_USERS" => Registry.Users,
                 "HKEY_CURRENT_CONFIG" => Registry.CurrentConfig,
-                _ => throw new InvalidOperationException()
+                _ => throw new NotSupportedException()
             };
 
             try
             {
                 return baseKey.OpenSubKey(path.Substring(index + 1));
             }
-            catch (Exception e) when (e is SecurityException || e is UnauthorizedAccessException)
+            catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
             {
                 ErrorRecord errorRecord = new(
-                    e,
-                    e.GetType().Name,
+                    ex,
+                    ex.GetType().Name,
                     ErrorCategory.PermissionDenied,
                     path
                 );
-
                 WriteError(errorRecord);
             }
 
@@ -175,7 +174,7 @@ namespace RegistryHelper
                 foreach (string subKeyName in key.GetSubKeyNames())
                 {
                     using RegistryKey? subKey = key.OpenSubKey(subKeyName);
-                    if (subKey == null)
+                    if (subKey is null)
                     {
                         WriteWarning($"Unable to open key '{subKey}'.");
                         continue;
@@ -208,20 +207,13 @@ namespace RegistryHelper
                             ErrorCategory.ObjectNotFound,
                             path
                         );
-
                         WriteError(errorRecord);
                         continue;
                     }
                 }
-                catch (DriveNotFoundException e)
+                catch (DriveNotFoundException ex)
                 {
-                    ErrorRecord errorRecord = new(
-                        new ItemNotFoundException(string.Format(ProjectResources.PathNotFound, path), e),
-                        "PathNotFound",
-                        ErrorCategory.ObjectNotFound,
-                        path
-                    );
-
+                    ErrorRecord errorRecord = new(ex.ErrorRecord, ex);
                     WriteError(errorRecord);
                     continue;
                 }
@@ -235,7 +227,7 @@ namespace RegistryHelper
                     paths.AddRange(SessionState.Path.GetResolvedProviderPathFromPSPath(path, out provider));
                 }
 
-                if (!provider.Name.Equals("Registry", StringComparison.InvariantCulture))
+                if (!provider.Name.Equals("Registry", StringComparison.Ordinal))
                 {
                     ErrorRecord errorRecord = new(
                         new InvalidOperationException(string.Format(ProjectResources.NotRegistryProvider, path)),
@@ -243,7 +235,6 @@ namespace RegistryHelper
                         ErrorCategory.InvalidArgument,
                         path
                     );
-
                     WriteError(errorRecord);
                     continue;
                 }
@@ -257,17 +248,17 @@ namespace RegistryHelper
 
     public class RegistryValueInfo
     {
-        public string? Hive { get; internal set; }
+        public string? Hive { get; init; }
 
-        public string? Name { get; internal set; }
+        public string? Name { get; init; }
 
-        public RegistryValueKind Type { get; internal set; }
+        public RegistryValueKind Type { get; init; }
 
-        public object? Value { get; internal set; }
+        public object? Value { get; init; }
 
         public override string? ToString()
         {
-            if (Value == null)
+            if (Value is null)
             {
                 return string.Empty;
             }

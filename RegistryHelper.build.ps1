@@ -15,7 +15,7 @@ task Build @{
     Inputs  = Get-ChildItem -Path *.cs, *.csproj
     Outputs = "bin\$Configuration\$Framework\RegistryHelper.dll"
     Jobs    = {
-        exec { dotnet publish -c $Configuration -f $Framework }
+        exec { dotnet publish --nologo -c $Configuration -f $Framework }
     }
 }
 
@@ -49,11 +49,11 @@ task Test {
 
     switch ($Framework) {
         "net6.0" {
-            exec { pwsh -c $command }
+            exec { pwsh -NoProfile -c $command }
         }
 
         "net462" {
-            exec { powershell -Command $command }
+            exec { powershell -NoProfile -Command $command }
         }
     }
 }
